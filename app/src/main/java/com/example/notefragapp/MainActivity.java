@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             loadMenuFragmentLandscape();
-            loadNoteTakingFragmentLandscape();
         } else {
             loadMenuFragment();
         }
@@ -47,6 +46,20 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
+        }
+        else{
+            mainActivityDataViewModel.clickedValue.observe(this, new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer integer) {
+                    if (mainActivityDataViewModel.getClickedValue() == 1) {
+                        loadNoteTakingFragmentLandscape();
+                    }
+                    if (mainActivityDataViewModel.getClickedValue() == 2){
+                        loadMenuFragmentLandscape();
+                    }
+                }
+            });
+
         }
     }
 
@@ -77,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         if (frag == null) {
             fm.beginTransaction().add(R.id.menu_container, menuFragment).commit();
         } else {
-            fm.beginTransaction().replace(R.id.menu_container, menuFragment).commit();
+            fm.beginTransaction().replace(R.id.menu_container, menuFragment).hide(noteTakingFragment).commit();
         }
     }
 
@@ -86,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         if (frag == null) {
             fm.beginTransaction().add(R.id.note_container, noteTakingFragment).commit();
         } else {
-            fm.beginTransaction().replace(R.id.note_container, noteTakingFragment).commit();
+            fm.beginTransaction().replace(R.id.note_container, noteTakingFragment).show(noteTakingFragment).commit();
         }
     }
 }
